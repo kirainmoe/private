@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="UTF-8" />
+	<title>Simple PPT Timer</title>
+
+	<style type="text/css">
+		html, body {
+			width: 100%;
+			height: 100%;
+			margin: 0px;
+			overflow: hidden;
+			font-family: 'Microsoft YaHei';
+		}
+		#container {
+			width: 100%;
+			height: 100%;
+
+			text-align: center;
+			overflow: hidden;
+		}
+
+		#timer {
+			font-size: 80px;
+			margin-top: 10%;
+		}
+		#timer-btn {
+			width: 200px;
+			height: 50px;
+
+			font-size: 20px;
+			background: rgb(75, 174, 79);
+			color: #fff;
+			border: 0px;
+			cursor: pointer;
+		}
+	</style>
+</head>
+<body>
+	<div id="container">
+		<h1 id="timer">00:00</h1>
+		<button id="timer-btn">开始</button>
+	</div>
+
+	<script type="text/javascript">
+	var getTime = function ()
+	{
+		var query = window.location.search;
+		return Number(query.replace('?time=', ''));
+	},
+	initTimer = function(times, dom, flag) {
+		clearTimeout(window.time);
+
+		if (times != -1) {
+			if (flag)
+				dom.style.color = 'black';
+
+			var minute = parseInt(times / 60),
+					second = times % 60;
+			if (second < 10) second = '0' + second;
+			dom.innerHTML = minute + ':' + second;
+
+			window.time = setTimeout(function() {
+				dom.setAttribute('seconds', times - 1);
+				initTimer(times - 1, dom);
+			}, 1000);
+		} else {
+			if (flag)
+				dom.style.color = 'red';
+		}
+	};
+
+	document.getElementById('timer-btn').onclick = function() {
+		initTimer(getTime(), document.getElementById('timer'), true);
+	};
+	</script>
+</body>
+</html>
